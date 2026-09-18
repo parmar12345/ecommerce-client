@@ -1,0 +1,330 @@
+<div class="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-[#edf5fb]">
+
+  <!-- Background -->
+  <div class="absolute -top-32 -left-32 w-[520px] h-[520px] rounded-full bg-[#d8ecfa]"></div>
+
+  <div class="absolute -bottom-48 -right-32 w-[600px] h-[600px] rounded-full bg-[#dceefe]"></div>
+
+  <div class="absolute top-[12%] right-[12%]
+              w-16 h-16 rounded-[1.5rem]
+              bg-blue-500/10 rotate-12">
+  </div>
+
+  <div class="absolute bottom-[18%] left-[13%]
+              w-4 h-4 rounded-full bg-blue-400/40">
+  </div>
+
+
+  <!-- Main Layout -->
+  <div class="relative z-10 w-full max-w-6xl
+              flex items-center justify-center gap-12 lg:gap-16">
+
+
+    <!-- LEFT CONTENT -->
+    <div class="hidden lg:flex flex-col justify-center
+                w-1/2 max-w-lg pr-8">
+
+      <p class="text-sm font-bold uppercase tracking-[0.2em]
+                text-blue-600 mb-4">
+        Start your journey
+      </p>
+
+      <h2 class="text-4xl xl:text-5xl font-extrabold
+                 tracking-tight text-slate-900 leading-tight">
+
+        Your shopping journey
+        <span class="text-blue-600">starts here.</span>
+
+      </h2>
+
+      <p class="mt-5 text-lg text-slate-600 leading-relaxed">
+        Create your account and discover everything you need
+        in one place. Shop your favorite products, manage your
+        orders, and enjoy a simple shopping experience.
+      </p>
+
+
+      <!-- FEATURES -->
+      <div class="mt-8 grid grid-cols-2 gap-4">
+
+        <!-- Secure -->
+        <div class="flex items-center gap-3">
+
+          <div class="w-10 h-10 rounded-xl bg-blue-100
+                      flex items-center justify-center">
+
+            <span class="text-lg">✓</span>
+
+          </div>
+
+          <div>
+            <p class="font-bold text-slate-900">
+              Secure
+            </p>
+
+            <p class="text-sm text-slate-500">
+              Protected account
+            </p>
+          </div>
+
+        </div>
+
+
+        <!-- Fast -->
+        <div class="flex items-center gap-3">
+
+          <div class="w-10 h-10 rounded-xl bg-blue-100
+                      flex items-center justify-center">
+
+            <span class="text-lg">⚡</span>
+
+          </div>
+
+          <div>
+            <p class="font-bold text-slate-900">
+              Fast
+            </p>
+
+            <p class="text-sm text-slate-500">
+              Simple checkout
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- REGISTER CARD -->
+    <div class="w-full max-w-md relative
+                bg-white border border-white
+                rounded-[2rem] p-7
+                shadow-[0_25px_70px_rgba(30,64,175,0.12)]">
+
+      <!-- Top Accent -->
+      <div class="absolute top-0 left-8 right-8
+                  h-1.5 bg-blue-600 rounded-b-full">
+      </div>
+
+
+      <!-- Header -->
+      <div class="text-center mb-6">
+
+        <div class="mx-auto w-11 h-11 rounded-2xl
+                    bg-blue-50 flex items-center justify-center
+                    text-blue-600 mb-3">
+
+          <!-- User Plus Icon -->
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19a4 4 0 00-8 0" />
+
+            <circle cx="11" cy="7" r="4" />
+
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 8v6M16 11h6" />
+
+          </svg>
+
+        </div>
+
+        <h1 class="text-2xl font-extrabold text-slate-900">
+          Create your account
+        </h1>
+
+        <p class="text-sm text-slate-500 mt-2">
+          Join us and start shopping today.
+        </p>
+
+      </div>
+
+
+      <!-- REGISTER FORM -->
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-4">
+
+        <!-- Name -->
+        <div>
+
+          <label for="name" class="block text-sm font-semibold
+                   text-slate-700 mb-1.5">
+            Full Name
+          </label>
+
+          <input id="name" type="text" formControlName="name" placeholder="Enter your name" class="w-full px-4 py-3
+                   rounded-xl border border-slate-200
+                   bg-slate-50
+                   text-slate-900
+                   placeholder:text-slate-400
+                   outline-none
+                   focus:border-blue-500
+                   focus:ring-4 focus:ring-blue-500/10
+                   transition" />
+
+          @if (
+          registerForm.get('name')?.touched &&
+          registerForm.get('name')?.invalid
+          ) {
+          <p class="text-xs text-red-500 mt-1">
+            Please enter your name.
+          </p>
+          }
+
+        </div>
+
+
+        <!-- Email -->
+        <div>
+
+          <label for="email" class="block text-sm font-semibold
+                   text-slate-700 mb-1.5">
+            Email
+          </label>
+
+          <input id="email" type="email" formControlName="email" placeholder="you@example.com" class="w-full px-4 py-3
+                   rounded-xl border border-slate-200
+                   bg-slate-50
+                   text-slate-900
+                   placeholder:text-slate-400
+                   outline-none
+                   focus:border-blue-500
+                   focus:ring-4 focus:ring-blue-500/10
+                   transition" />
+
+          @if (
+          registerForm.get('email')?.touched &&
+          registerForm.get('email')?.invalid
+          ) {
+          <p class="text-xs text-red-500 mt-1">
+            Please enter a valid email.
+          </p>
+          }
+
+        </div>
+
+
+        <!-- Password -->
+        <div>
+
+          <label for="password" class="block text-sm font-semibold
+                   text-slate-700 mb-1.5">
+            Password
+          </label>
+
+          <input id="password" type="password" formControlName="password" placeholder="Create a password" class="w-full px-4 py-3
+                   rounded-xl border border-slate-200
+                   bg-slate-50
+                   text-slate-900
+                   placeholder:text-slate-400
+                   outline-none
+                   focus:border-blue-500
+                   focus:ring-4 focus:ring-blue-500/10
+                   transition" />
+
+          @if (
+          registerForm.get('password')?.touched &&
+          registerForm.get('password')?.invalid
+          ) {
+          <p class="text-xs text-red-500 mt-1">
+            Password must be at least 8 characters.
+          </p>
+          }
+
+        </div>
+
+
+        <!-- Error -->
+        @if (errorMessage) {
+
+        <div class="p-3 rounded-xl
+                      bg-red-50 border border-red-200
+                      text-red-600 text-sm">
+
+          {{ errorMessage }}
+
+        </div>
+
+        }
+
+
+        <!-- Success -->
+        @if (successMessage) {
+
+        <div class="p-3 rounded-xl
+                      bg-emerald-50 border border-emerald-200
+                      text-emerald-600 text-sm">
+
+          {{ successMessage }}
+
+        </div>
+
+        }
+
+
+        <!-- Button -->
+        <button type="submit" [disabled]="isSubmitting" class="w-full py-3 rounded-xl
+                 bg-blue-600 text-white
+                 font-bold
+                 shadow-lg shadow-blue-600/20
+                 hover:bg-blue-700
+                 disabled:opacity-60
+                 disabled:cursor-not-allowed
+                 transition">
+
+          @if (isSubmitting) {
+          Registering...
+          } @else {
+          Create account
+          }
+
+        </button>
+
+      </form>
+
+
+      <!-- Login -->
+      <div class="text-center pt-5 mt-5
+                  border-t border-slate-100">
+
+        <p class="text-sm text-slate-500">
+
+          Already have an account?
+
+          <a routerLink="/auth/login" class="text-sm
+                   font-semibold
+                   text-blue-600
+                   hover:text-blue-700
+                   transition-colors
+                   cursor-pointer">
+            Sign in
+
+
+          </a>
+
+        </p>
+
+        <!-- Security Note -->
+
+        <!-- Security Note -->
+        <div class="mt-5
+               flex items-center justify-center
+               gap-2
+               text-[11px]
+               text-slate-400">
+
+          <span class="w-1.5 h-1.5
+                 rounded-full
+                 bg-emerald-400">
+          </span>
+
+          Your information is securely protected
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

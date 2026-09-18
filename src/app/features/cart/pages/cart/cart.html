@@ -1,0 +1,333 @@
+<div class="cart-container">
+
+  <!-- Header -->
+  <div class="cart-header">
+
+    <div>
+      <h1>Shopping Cart</h1>
+
+      @if (cart) {
+        <p>
+          {{ cart.totalItems }}
+          {{ cart.totalItems === 1 ? 'item' : 'items' }}
+          in your cart
+        </p>
+      }
+    </div>
+
+    <button
+      type="button"
+      class="continue-shopping-button"
+      (click)="continueShopping()"
+    >
+      Continue Shopping
+    </button>
+
+  </div>
+
+
+  <!-- Loading -->
+  @if (isLoading) {
+
+    <div class="cart-loading">
+      <p>Loading your cart...</p>
+    </div>
+
+  }
+
+
+  <!-- Error -->
+  @if (!isLoading && errorMessage) {
+
+    <div class="cart-error">
+      {{ errorMessage }}
+    </div>
+
+  }
+
+
+  <!-- Empty Cart -->
+  @if (
+    !isLoading &&
+    !errorMessage &&
+    cart &&
+    cart.items.length === 0
+  ) {
+
+    <div class="empty-cart">
+
+      <div class="empty-cart-icon">
+        🛒
+      </div>
+
+      <h2>Your cart is empty</h2>
+
+      <p>
+        Looks like you haven't added anything to your cart yet.
+      </p>
+
+      <button
+        type="button"
+        class="shop-now-button"
+        (click)="continueShopping()"
+      >
+        Start Shopping
+      </button>
+
+    </div>
+
+  }
+
+
+  <!-- Cart Content -->
+  @if (
+    !isLoading &&
+    !errorMessage &&
+    cart &&
+    cart.items.length > 0
+  ) {
+
+    <div class="cart-layout">
+
+      <!-- Cart Items -->
+      <section class="cart-items-section">
+
+        <div class="cart-items-header">
+
+          <h2>Cart Items</h2>
+
+          <button
+            type="button"
+            class="clear-cart-button"
+            [disabled]="isClearing"
+            (click)="clearCart()"
+          >
+            @if (isClearing) {
+              Clearing...
+            } @else {
+              Clear Cart
+            }
+          </button>
+
+        </div>
+
+
+        <div class="cart-items">
+
+          @for (item of cart.items; track item.id) {
+
+            <article class="cart-item">
+
+              <!-- Product Image -->
+              <div class="cart-item-image">
+
+                @if (item.primaryImageUrl) {
+
+                  <img
+                    [src]="getImageUrl(item.primaryImageUrl)"
+                    [alt]="item.productName"
+                  >
+
+                } @else {
+
+                  <div class="image-placeholder">
+                    No Image
+                  </div>
+
+                }
+
+              </div>
+
+
+              <!-- Product Information -->
+              <div class="cart-item-details">
+
+                <h3>
+                  {{ item.productName }}
+                </h3>
+
+                <p class="unit-price">
+                  ₹{{ item.unitPrice | number:'1.2-2' }}
+                  <span>each</span>
+                </p>
+
+
+                <!-- Quantity -->
+                <div class="quantity-section">
+
+                  <span class="quantity-label">
+                    Quantity
+                  </span>
+
+                  <div class="quantity-controls">
+
+                    <button
+                      type="button"
+                      class="quantity-button"
+                      [disabled]="
+                        updatingItemId === item.id ||
+                        item.quantity <= 1
+                      "
+                      (click)="
+                        decreaseQuantity(
+                          item.id,
+                          item.quantity
+                        )
+                      "
+                    >
+                      −
+                    </button>
+
+                    <span class="quantity-value">
+
+                      @if (updatingItemId === item.id) {
+                        Updating...
+                      } @else {
+                        {{ item.quantity }}
+                      }
+
+                    </span>
+
+                    <button
+                      type="button"
+                      class="quantity-button"
+                      [disabled]="
+                        updatingItemId === item.id ||
+                        item.quantity >= item.availableStock
+                      "
+                      (click)="
+                        increaseQuantity(
+                          item.id,
+                          item.quantity,
+                          item.availableStock
+                        )
+                      "
+                    >
+                      +
+                    </button>
+
+                  </div>
+
+                  <span class="stock-info">
+                    {{ item.availableStock }} available
+                  </span>
+
+                </div>
+
+
+                <!-- Remove -->
+                <button
+                  type="button"
+                  class="remove-button"
+                  [disabled]="removingItemId === item.id"
+                  (click)="removeItem(item.id)"
+                >
+                  @if (removingItemId === item.id) {
+                    Removing...
+                  } @else {
+                    Remove
+                  }
+                </button>
+
+              </div>
+
+
+              <!-- Line Total -->
+              <div class="cart-item-total">
+
+                <span class="total-label">
+                  Total
+                </span>
+
+                <strong>
+                  ₹{{ item.lineTotal | number:'1.2-2' }}
+                </strong>
+
+              </div>
+
+            </article>
+
+          }
+
+        </div>
+
+      </section>
+
+
+      <!-- Cart Summary -->
+      <aside class="cart-summary">
+
+        <h2>Order Summary</h2>
+
+
+        <div class="summary-row">
+
+          <span>
+            Items
+          </span>
+
+          <span>
+            {{ cart.totalItems }}
+          </span>
+
+        </div>
+
+
+        <div class="summary-row">
+
+          <span>
+            Subtotal
+          </span>
+
+          <span>
+            ₹{{ cart.subtotal | number:'1.2-2' }}
+          </span>
+
+        </div>
+
+
+        <div class="summary-divider"></div>
+
+
+        <div class="summary-total">
+
+          <span>
+            Total
+          </span>
+
+          <strong>
+            ₹{{ cart.subtotal | number:'1.2-2' }}
+          </strong>
+
+        </div>
+
+
+        <!-- Checkout placeholder -->
+        <button
+          type="button"
+          class="checkout-button"
+          disabled
+        >
+          Checkout
+        </button>
+
+        <p class="checkout-note">
+          Checkout will be available after the order system is added.
+        </p>
+
+
+        <button
+          type="button"
+          class="summary-shopping-button"
+          (click)="continueShopping()"
+        >
+          Continue Shopping
+        </button>
+
+      </aside>
+
+    </div>
+
+  }
+
+</div>

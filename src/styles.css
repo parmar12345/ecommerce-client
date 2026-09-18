@@ -1,1 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* @keyframes float {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(40px, -30px) scale(1.1); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+@keyframes sweep {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
+} */
+@import "tailwindcss";
