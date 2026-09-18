@@ -1,30 +1,27 @@
-  
 <div class="min-h-screen relative overflow-hidden bg-[#edf5fb] px-4 py-6 md:px-8">
 
   <!-- Background Decorations -->
-  <div
-    class="absolute -top-32 -left-32 w-[520px] h-[520px]
-           rounded-full bg-[#d8ecfa]"
-  ></div>
 
-  <div
-    class="absolute -bottom-48 -right-32 w-[600px] h-[600px]
-           rounded-full bg-[#dceefe]"
-  ></div>
+  <div class="absolute -top-32 -left-32 w-[520px] h-[520px]
+           rounded-full bg-[#d8ecfa]">
+  </div>
 
-  <div
-    class="absolute top-[12%] right-[12%]
+  <div class="absolute -bottom-48 -right-32 w-[600px] h-[600px]
+           rounded-full bg-[#dceefe]">
+  </div>
+
+  <div class="absolute top-[12%] right-[12%]
            w-20 h-20 rounded-[2rem]
-           bg-blue-500/10 rotate-12"
-  ></div>
+           bg-blue-500/10 rotate-12">
+  </div>
 
-  <div
-    class="absolute bottom-[18%] left-[13%]
-           w-4 h-4 rounded-full bg-blue-400/40"
-  ></div>
+  <div class="absolute bottom-[18%] left-[13%]
+           w-4 h-4 rounded-full bg-blue-400/40">
+  </div>
 
 
   <!-- Main Content -->
+
   <div class="relative max-w-7xl mx-auto">
 
 
@@ -32,91 +29,50 @@
     <!-- Catalog Header -->
     <!-- ========================= -->
 
-    <div
+    <!-- <div
       class="bg-white rounded-[2rem]
              border border-white
              shadow-[0_25px_80px_rgba(30,64,175,0.12)]
-             p-5 md:p-7 mb-6"
-    >
+             p-5 md:p-7 mb-6">
 
-      <div
-        class="flex flex-col md:flex-row
-               md:items-center md:justify-between
-               gap-5"
-      >
+      <div class="flex flex-col md:flex-row
+                  md:items-center md:justify-between
+                  gap-5"> -->
 
-        <!-- Title -->
-        <!-- <div>
+    <!-- Title -->
 
+    <!-- <div>
           <p class="text-sm font-semibold text-blue-600 mb-1">
             ShopStore
           </p>
 
           <h1
             class="text-2xl md:text-3xl
-                   font-bold text-slate-800"
-          >
+                   font-bold text-slate-800">
             Product Catalog
           </h1>
 
           <p class="mt-1 text-sm text-slate-500">
             Browse our products
           </p>
+        </div> -->
+
+    <!-- Product Count -->
+
+    <!-- <div
+          class="inline-flex items-center
+                 px-4 py-2.5
+                 rounded-xl
+                 bg-blue-50
+                 text-blue-600
+                 text-sm
+                 font-semibold">
+
+          {{ totalCount }} products
 
         </div> -->
 
-
-        <!-- Sort
-        <div class="flex items-center gap-3">
-
-          <label
-            for="sort"
-            class="text-sm font-semibold
-                   text-slate-600 whitespace-nowrap"
-          >
-            Sort by:
-          </label>
-
-          <select
-            id="sort"
-            (change)="onSortChange($any($event.target).value)"
-            class="h-10
-                   px-3 pr-9
-                   rounded-xl
-                   border border-slate-200
-                   bg-[#f5f9fd]
-                   text-sm
-                   text-slate-700
-                   outline-none
-                   cursor-pointer
-                   focus:border-blue-500
-                   focus:ring-2
-                   focus:ring-blue-100
-                   transition-all"
-          >
-
-            <option value="featured">
-              Featured
-            </option>
-
-            <option value="price-low">
-              Price: Low to High
-            </option>
-
-            <option value="price-high">
-              Price: High to Low
-            </option>
-
-            <option value="name">
-              Name
-            </option>
-
-          </select>
-
-        </div>
-
-      </div>
-
+    <!-- </div>
     </div> -->
 
 
@@ -124,37 +80,35 @@
     <!-- Catalog Body -->
     <!-- ========================= -->
 
-    <div
-      class="grid grid-cols-1
+    <div class="grid grid-cols-1
              lg:grid-cols-[240px_1fr]
-             gap-6"
-    >
+             gap-6">
 
 
       <!-- ========================= -->
       <!-- Sidebar -->
       <!-- ========================= -->
 
-      <aside
-        class="bg-white
+      <aside class="bg-white
                rounded-[2rem]
                border border-white
                shadow-[0_20px_60px_rgba(30,64,175,0.09)]
                p-5
                h-fit
                lg:sticky
-               lg:top-24"
-      >
+               lg:top-24">
 
+
+        <!-- ========================= -->
         <!-- Categories -->
+        <!-- ========================= -->
+
         <div>
 
-          <h3
-            class="text-lg
+          <h3 class="text-lg
                    font-bold
                    text-slate-800
-                   mb-4"
-          >
+                   mb-4">
             Categories
           </h3>
 
@@ -162,38 +116,37 @@
           <ul class="space-y-1.5">
 
             <!-- All Products -->
+
             <li>
 
-              <button
-                type="button"
-                (click)="clearFilters()"
-                class="w-full
-                       flex items-center
+              <button type="button" (click)="selectCategory(null)" [class.bg-blue-50]="selectedCategoryId === null"
+                [class.text-blue-600]="selectedCategoryId === null" class="w-full
                        px-4 py-2.5
                        rounded-xl
-                       bg-blue-50
-                       text-blue-600
-                       text-sm
-                       font-semibold
                        text-left
-                       hover:bg-blue-100
-                       transition-colors"
-              >
+                       text-sm
+                       font-medium
+                       text-slate-600
+                       hover:bg-blue-50
+                       hover:text-blue-600
+                       transition-colors">
+
                 All Products
+
               </button>
 
             </li>
 
 
             <!-- Dynamic Categories -->
+
             @for (category of categories; track category.id) {
 
-              <li>
+            <li>
 
-                <button
-                  type="button"
-                  (click)="selectCategory(category.id)"
-                  class="w-full
+              <button type="button" (click)="selectCategory(category.id)"
+                [class.bg-blue-50]="selectedCategoryId === category.id"
+                [class.text-blue-600]="selectedCategoryId === category.id" class="w-full
                          flex items-center
                          px-4 py-2.5
                          rounded-xl
@@ -203,12 +156,13 @@
                          text-left
                          hover:bg-blue-50
                          hover:text-blue-600
-                         transition-colors"
-                >
-                  {{ category.name }}
-                </button>
+                         transition-colors">
 
-              </li>
+                {{ category.name }}
+
+              </button>
+
+            </li>
 
             }
 
@@ -218,30 +172,33 @@
 
 
         <!-- Divider -->
+
         <div class="my-6 border-t border-slate-100"></div>
 
 
+        <!-- ========================= -->
         <!-- Price Filter -->
+        <!-- ========================= -->
+
         <div>
 
-          <h3
-            class="text-lg
+          <h3 class="text-lg
                    font-bold
                    text-slate-800
-                   mb-4"
-          >
+                   mb-4">
             Price
           </h3>
 
 
           <ul class="space-y-1.5">
 
+
             <!-- All Prices -->
+
             <li>
 
-              <button
-                type="button"
-                (click)="filterByPrice(undefined, undefined)"
+              <button type="button" (click)="filterByPrice(undefined, undefined)"
+                [class.bg-blue-50]="selectedPriceFilter === 'all'" [class.text-blue-600]="selectedPriceFilter === 'all'"
                 class="w-full
                        px-4 py-2.5
                        rounded-xl
@@ -251,21 +208,22 @@
                        text-slate-600
                        hover:bg-blue-50
                        hover:text-blue-600
-                       transition-colors"
-              >
+                       transition-colors">
+
                 All Prices
+
               </button>
 
             </li>
 
 
             <!-- Under 50K -->
+
             <li>
 
-              <button
-                type="button"
-                (click)="filterByPrice(undefined, 50000)"
-                class="w-full
+              <button type="button" (click)="filterByPrice(undefined, 50000)"
+                [class.bg-blue-50]="selectedPriceFilter === 'under-50000'"
+                [class.text-blue-600]="selectedPriceFilter === 'under-50000'" class="w-full
                        px-4 py-2.5
                        rounded-xl
                        text-left
@@ -274,21 +232,22 @@
                        text-slate-600
                        hover:bg-blue-50
                        hover:text-blue-600
-                       transition-colors"
-              >
+                       transition-colors">
+
                 Under ₹50,000
+
               </button>
 
             </li>
 
 
             <!-- 50K - 1L -->
+
             <li>
 
-              <button
-                type="button"
-                (click)="filterByPrice(50000, 100000)"
-                class="w-full
+              <button type="button" (click)="filterByPrice(50000, 100000)"
+                [class.bg-blue-50]="selectedPriceFilter === '50000-100000'"
+                [class.text-blue-600]="selectedPriceFilter === '50000-100000'" class="w-full
                        px-4 py-2.5
                        rounded-xl
                        text-left
@@ -297,21 +256,20 @@
                        text-slate-600
                        hover:bg-blue-50
                        hover:text-blue-600
-                       transition-colors"
-              >
+                       transition-colors">
+
                 ₹50,000 - ₹1,00,000
+
               </button>
 
             </li>
 
 
             <!-- Clear -->
+
             <li class="pt-2">
 
-              <button
-                type="button"
-                (click)="clearFilters()"
-                class="w-full
+              <button type="button" (click)="clearFilters()" class="w-full
                        px-4 py-2.5
                        rounded-xl
                        border border-red-100
@@ -320,9 +278,10 @@
                        text-sm
                        font-semibold
                        hover:bg-red-100
-                       transition-colors"
-              >
+                       transition-colors">
+
                 Clear Filters
+
               </button>
 
             </li>
@@ -331,108 +290,113 @@
 
         </div>
 
+
         <!-- Divider -->
 
-<div class="my-6 border-t border-slate-100"></div>
-
-<!-- Sort By -->
-
-<div>
-
-  <h3
-    class="text-lg
-           font-bold
-           text-slate-800
-           mb-4"
-  >
-    Sort By
-  </h3>
-
-  <div class="space-y-1.5">
+        <div class="my-6 border-t border-slate-100"></div>
 
 
-<!-- Featured -->
-<button
-  type="button"
-  (click)="onSortChange('featured')"
-  class="w-full
-         px-4 py-2.5
-         rounded-xl
-         text-left
-         text-sm
-         font-medium
-         text-slate-600
-         hover:bg-blue-50
-         hover:text-blue-600
-         transition-colors"
->
-  Featured
-</button>
+        <!-- ========================= -->
+        <!-- Sort By -->
+        <!-- ========================= -->
 
-<!-- Price Low to High -->
-<button
-  type="button"
-  (click)="onSortChange('price-low')"
-  class="w-full
-         px-4 py-2.5
-         rounded-xl
-         text-left
-         text-sm
-         font-medium
-         text-slate-600
-         hover:bg-blue-50
-         hover:text-blue-600
-         transition-colors"
->
-  Price: Low to High
-</button>
+        <div>
 
-<!-- Price High to Low -->
-<button
-  type="button"
-  (click)="onSortChange('price-high')"
-  class="w-full
-         px-4 py-2.5
-         rounded-xl
-         text-left
-         text-sm
-         font-medium
-         text-slate-600
-         hover:bg-blue-50
-         hover:text-blue-600
-         transition-colors"
->
-  Price: High to Low
-</button>
+          <h3 class="text-lg
+                   font-bold
+                   text-slate-800
+                   mb-4">
 
-<!-- Name -->
-<button
-  type="button"
-  (click)="onSortChange('name')"
-  class="w-full
-         px-4 py-2.5
-         rounded-xl
-         text-left
-         text-sm
-         font-medium
-         text-slate-600
-         hover:bg-blue-50
-         hover:text-blue-600
-         transition-colors"
->
-  Name
-</button>
+            Sort By
+
+          </h3>
 
 
-  </div>
+          <div class="space-y-1.5">
 
-</div>
 
+            <!-- Featured -->
+
+            <button type="button" (click)="onSortChange('featured')" [class.bg-blue-50]="selectedSort === 'featured'"
+              [class.text-blue-600]="selectedSort === 'featured'" class="w-full
+                     px-4 py-2.5
+                     rounded-xl
+                     text-left
+                     text-sm
+                     font-medium
+                     text-slate-600
+                     hover:bg-blue-50
+                     hover:text-blue-600
+                     transition-colors">
+
+              Featured
+
+            </button>
+
+
+            <!-- Price Low to High -->
+
+            <button type="button" (click)="onSortChange('price-low')" [class.bg-blue-50]="selectedSort === 'price-low'"
+              [class.text-blue-600]="selectedSort === 'price-low'" class="w-full
+                     px-4 py-2.5
+                     rounded-xl
+                     text-left
+                     text-sm
+                     font-medium
+                     text-slate-600
+                     hover:bg-blue-50
+                     hover:text-blue-600
+                     transition-colors">
+
+              Price: Low to High
+
+            </button>
+
+
+            <!-- Price High to Low -->
+
+            <button type="button" (click)="onSortChange('price-high')"
+              [class.bg-blue-50]="selectedSort === 'price-high'" [class.text-blue-600]="selectedSort === 'price-high'"
+              class="w-full
+                     px-4 py-2.5
+                     rounded-xl
+                     text-left
+                     text-sm
+                     font-medium
+                     text-slate-600
+                     hover:bg-blue-50
+                     hover:text-blue-600
+                     transition-colors">
+
+              Price: High to Low
+
+            </button>
+
+
+            <!-- Name -->
+
+            <button type="button" (click)="onSortChange('name')" [class.bg-blue-50]="selectedSort === 'name'"
+              [class.text-blue-600]="selectedSort === 'name'" class="w-full
+                     px-4 py-2.5
+                     rounded-xl
+                     text-left
+                     text-sm
+                     font-medium
+                     text-slate-600
+                     hover:bg-blue-50
+                     hover:text-blue-600
+                     transition-colors">
+
+              Name
+
+            </button>
+
+
+          </div>
+
+        </div>
 
       </aside>
-
-      
-      
 
 
       <!-- ========================= -->
@@ -443,30 +407,27 @@
 
 
         <!-- Product Count -->
-        <div
-          class="bg-white
+
+        <div class="bg-white
                  rounded-2xl
                  border border-white
                  shadow-[0_10px_35px_rgba(30,64,175,0.07)]
                  px-5 py-3
                  mb-5
                  flex items-center
-                 justify-between"
-        >
+                 justify-between">
 
-          <!-- <p class="text-sm text-slate-500">
+          <p class="text-sm text-slate-500">
 
             Showing
 
-            <span
-              class="font-bold text-slate-800"
-            >
+            <span class="font-bold text-slate-800">
               {{ products.length }}
             </span>
 
             products
 
-          </p> -->
+          </p>
 
         </div>
 
@@ -475,18 +436,18 @@
         <!-- Product Grid -->
         <!-- ========================= -->
 
-        <div
-          class="grid grid-cols-1
+        <div class="grid grid-cols-1
                  sm:grid-cols-2
                  xl:grid-cols-3
-                 gap-5"
-        >
+                 gap-5">
+
 
           @for (product of products; track product.id) {
 
-            <!-- Product Card -->
-            <div
-              class="group
+
+          <!-- Product Card -->
+
+          <div class="group
                      bg-white
                      rounded-[1.5rem]
                      border border-white
@@ -494,258 +455,232 @@
                      shadow-[0_15px_45px_rgba(30,64,175,0.08)]
                      hover:-translate-y-1
                      hover:shadow-[0_20px_55px_rgba(30,64,175,0.15)]
-                     transition-all duration-300"
-            >
+                     transition-all duration-300">
 
 
-              <!-- ========================= -->
-              <!-- Product Image -->
-              <!-- ========================= -->
+            <!-- ========================= -->
+            <!-- Product Image -->
+            <!-- ========================= -->
 
-              <div
-                class="relative
+            <div class="relative
                        h-56
                        bg-[#f5f9fd]
-                       overflow-hidden"
-              >
+                       overflow-hidden">
 
-                @if (product.images.length > 0) {
 
-                  <img
-                    [src]="apiUrl + product.images[0].imageUrl"
-                    [alt]="product.name"
-                    class="w-full
+              @if (product.images.length > 0) {
+
+              <img [src]="apiUrl + product.images[0].imageUrl" [alt]="product.name" class="w-full
                            h-full
                            object-contain
                            p-5
                            group-hover:scale-105
                            transition-transform
-                           duration-300"
-                  />
+                           duration-300" />
 
-                } @else {
+              } @else {
 
-                  <!-- No Image -->
-                  <div
-                    class="w-full
+
+              <!-- No Image -->
+
+              <div class="w-full
                            h-full
                            flex items-center
-                           justify-center"
-                  >
+                           justify-center">
 
-                    <div class="text-center">
+                <div class="text-center">
 
-                      <div
-                        class="w-14 h-14
+                  <div class="w-14 h-14
                                mx-auto
                                rounded-2xl
                                bg-blue-50
                                flex items-center
                                justify-center
-                               mb-2"
-                      >
+                               mb-2">
 
-                        <svg
-                          class="w-7 h-7 text-blue-300"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
+                    <svg class="w-7 h-7 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="1.5"
-                            d="M4 16l4.586-4.586a2 2 0 015.828 0L20 17m-2-7h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                          />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M4 16l4.586-4.586a2 2 0 015.828 0L20 17m-2-7h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
 
-                        </svg>
-
-                      </div>
-
-                      <p class="text-sm text-slate-400">
-                        No Image
-                      </p>
-
-                    </div>
+                    </svg>
 
                   </div>
 
-                }
+                  <p class="text-sm text-slate-400">
+                    No Image
+                  </p>
+
+                </div>
 
               </div>
 
+              }
 
-              <!-- ========================= -->
-              <!-- Product Information -->
-              <!-- ========================= -->
-
-              <div class="p-5">
+            </div>
 
 
-                <!-- Category -->
-                <p
-                  class="inline-flex
+            <!-- ========================= -->
+            <!-- Product Information -->
+            <!-- ========================= -->
+
+            <div class="p-5">
+
+
+              <!-- Category -->
+
+              <p class="inline-flex
                          px-3 py-1
                          rounded-full
                          bg-blue-50
                          text-blue-600
                          text-xs
                          font-semibold
-                         mb-3"
-                >
-                  {{ product.categoryName }}
-                </p>
+                         mb-3">
+
+                {{ product.categoryName }}
+
+              </p>
 
 
-                <!-- Product Name -->
-                <h2
-                  class="text-lg
+              <!-- Product Name -->
+
+              <h2 class="text-lg
                          font-bold
                          text-slate-800
                          line-clamp-1
                          group-hover:text-blue-600
-                         transition-colors"
-                >
-                  {{ product.name }}
-                </h2>
+                         transition-colors">
+
+                {{ product.name }}
+
+              </h2>
 
 
-                <!-- Description -->
-                <p
-                  class="mt-2
+              <!-- Description -->
+
+              <p class="mt-2
                          text-sm
                          text-slate-500
                          line-clamp-2
-                         min-h-[40px]"
-                >
-                  {{ product.description }}
-                </p>
+                         min-h-[40px]">
+
+                {{ product.description }}
+
+              </p>
 
 
-                <!-- Price -->
-                <div class="mt-4">
+              <!-- Price -->
 
-                  <span
-                    class="text-2xl
+              <div class="mt-4">
+
+                <span class="text-2xl
                            font-bold
-                           text-slate-800"
-                  >
-                    ₹{{ product.price }}
+                           text-slate-800">
+
+                  ₹{{ product.price }}
+
+                </span>
+
+              </div>
+
+
+              <!-- Stock -->
+
+              @if (product.stockQuantity > 0) {
+
+              <div class="mt-2">
+
+                <span class="inline-flex
+                             items-center
+                             gap-1.5
+                             text-xs
+                             font-semibold
+                             text-green-600">
+
+                  <span class="w-1.5 h-1.5
+                               rounded-full
+                               bg-green-500">
                   </span>
 
-                </div>
+                  {{ product.stockQuantity }} in stock
 
+                </span>
 
-                <!-- Stock -->
-                @if (product.stockQuantity > 0) {
+              </div>
 
-                  <div class="mt-2">
+              } @else {
 
-                    <span
-                      class="inline-flex
+              <div class="mt-2">
+
+                <span class="inline-flex
                              items-center
                              gap-1.5
                              text-xs
                              font-semibold
-                             text-green-600"
-                    >
+                             text-red-500">
 
-                      <span
-                        class="w-1.5 h-1.5
+                  <span class="w-1.5 h-1.5
                                rounded-full
-                               bg-green-500"
-                      ></span>
+                               bg-red-500">
+                  </span>
 
-                      {{ product.stockQuantity }} in stock
+                  Out of stock
 
-                    </span>
+                </span>
 
-                  </div>
+              </div>
 
-                } @else {
-
-                  <div class="mt-2">
-
-                    <span
-                      class="inline-flex
-                             items-center
-                             gap-1.5
-                             text-xs
-                             font-semibold
-                             text-red-500"
-                    >
-
-                      <span
-                        class="w-1.5 h-1.5
-                               rounded-full
-                               bg-red-500"
-                      ></span>
-
-                      Out of stock
-
-                    </span>
-
-                  </div>
-
-                }
+              }
 
 
-                <!-- ========================= -->
-                <!-- Actions -->
-                <!-- ========================= -->
+              <!-- ========================= -->
+              <!-- Actions -->
+              <!-- ========================= -->
 
-                <div
-                  class="grid
+              <div class="grid
                          grid-cols-2
                          gap-3
-                         mt-5"
-                >
-
-                  <!-- View Details -->
-                  <button
-                    type="button"
-                    class="h-10
-                           rounded-xl
-                           border border-blue-200
-                           bg-white
-                           text-blue-600
-                           text-sm
-                           font-semibold
-                           hover:bg-blue-50
-                           hover:border-blue-300
-                           transition-colors"
-                  >
-                    View Details
-                  </button>
+                         mt-5">
 
 
-                  <!-- Add To Cart -->
-                  <button
-                    type="button"
-                    [disabled]="product.stockQuantity <= 0"
-                    class="h-10
-                           rounded-xl
-                           bg-blue-600
-                           text-white
-                           text-sm
-                           font-semibold
-                           shadow-[0_8px_20px_rgba(37,99,235,0.20)]
-                           hover:bg-blue-700
-                           hover:shadow-[0_10px_25px_rgba(37,99,235,0.30)]
-                           disabled:bg-slate-300
-                           disabled:shadow-none
-                           disabled:cursor-not-allowed
-                           transition-all"
-                  >
-                    Add to Cart
-                  </button>
+                <!-- View Details -->
 
-                </div>
+                <a [routerLink]="['/products', product.id]" class="h-10
+         flex items-center
+         justify-center
+         rounded-xl
+         border border-blue-200
+         bg-white
+         text-blue-600
+         text-sm
+         font-semibold
+         hover:bg-blue-50
+         hover:border-blue-300
+         transition-colors">
+                  View Details
+                </a>
+
+
+                <!-- Add To Cart -->
+
+                <button type="button" (click)="addToCart(product.id)" [disabled]="product.stockQuantity <= 0"
+                  class="h-10 rounded-xl bg-blue-600 text-white text-sm font-semibold shadow-[0_8px_20px_rgba(37,99,235,0.20)] hover:bg-blue-700 hover:shadow-[0_10px_25px_rgba(37,99,235,0.30)] disabled:bg-slate-300 disabled:shadow-none disabled:cursor-not-allowed transition-all">
+
+                  @if (product.stockQuantity > 0) {
+                  Add to Cart
+                  } @else {
+                  Out of Stock
+                  }
+
+                </button>
+
 
               </div>
 
             </div>
+
+          </div>
 
           }
 
@@ -756,8 +691,7 @@
         <!-- Pagination -->
         <!-- ========================= -->
 
-        <div
-          class="mt-6
+        <div class="mt-6
                  bg-white
                  rounded-2xl
                  border border-white
@@ -765,15 +699,12 @@
                  px-4 py-4
                  flex items-center
                  justify-center
-                 gap-3"
-        >
+                 gap-3">
+
 
           <!-- Previous -->
-          <button
-            type="button"
-            (click)="previousPage()"
-            [disabled]="currentPage === 1"
-            class="px-4 py-2
+
+          <button type="button" (click)="previousPage()" [disabled]="currentPage === 1" class="px-4 py-2
                    rounded-xl
                    border border-slate-200
                    bg-white
@@ -785,32 +716,31 @@
                    hover:border-blue-200
                    disabled:opacity-40
                    disabled:cursor-not-allowed
-                   transition-colors"
-          >
+                   transition-colors">
+
             Previous
+
           </button>
 
 
           <!-- Current Page -->
-          <span
-            class="px-4 py-2
+
+          <span class="px-4 py-2
                    rounded-xl
                    bg-blue-600
                    text-white
                    text-sm
                    font-semibold
-                   shadow-[0_6px_15px_rgba(37,99,235,0.20)]"
-          >
+                   shadow-[0_6px_15px_rgba(37,99,235,0.20)]">
+
             Page {{ currentPage }} of {{ totalPages }}
+
           </span>
 
 
           <!-- Next -->
-          <button
-            type="button"
-            (click)="nextPage()"
-            [disabled]="currentPage === totalPages"
-            class="px-4 py-2
+
+          <button type="button" (click)="nextPage()" [disabled]="currentPage === totalPages" class="px-4 py-2
                    rounded-xl
                    border border-slate-200
                    bg-white
@@ -822,10 +752,12 @@
                    hover:border-blue-200
                    disabled:opacity-40
                    disabled:cursor-not-allowed
-                   transition-colors"
-          >
+                   transition-colors">
+
             Next
+
           </button>
+
 
         </div>
 

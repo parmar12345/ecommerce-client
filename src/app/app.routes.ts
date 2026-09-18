@@ -27,7 +27,13 @@ export const routes: Routes = [
       import('./features/cart/pages/cart/cart')
         .then(m => m.Cart)
   },
-
+  {
+  path: 'address',
+  loadChildren: () =>
+    import('./features/address/address.routes').then(
+      (m) => m.addressRoutes
+    ),
+},
   {
     path: '',
     redirectTo: 'auth/login',
