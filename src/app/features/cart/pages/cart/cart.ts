@@ -1,43 +1,74 @@
-import { Component } from '@angular/core';
-import { ChangeDetectorRef } from '@angular/core';
-import { DecimalPipe } from '@angular/common';
-import { Router } from '@angular/router';
-import { inject } from '@angular/core';
-import { CartService } from '../../services/cart';
 import {
-  CartResponse,
-  AddToCartRequest,
-  UpdateCartItemRequest
-} from '../../models/cart.models';
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  inject
+} from '@angular/core';
+
+import { DecimalPipe } from '@angular/common';
+
+import { RouterLink } from '@angular/router';
+
+import { CartService } from '../../services/cart';
+
+import { Cart as CartModel } from '../../models/cart';
+
+import { environment } from '../../../../../environments/environment';
+
 
 @Component({
   selector: 'app-cart',
-  imports: [DecimalPipe],
+
+  imports: [
+    DecimalPipe,
+    RouterLink
+  ],
+
   templateUrl: './cart.html',
+
   styleUrl: './cart.css',
 })
-export class Cart {
+export class Cart implements OnInit {
+
   private readonly cartService =
     inject(CartService);
-
-  private readonly router =
-    inject(Router);
 
   private readonly cdr =
     inject(ChangeDetectorRef);
 
-  cart: CartResponse | null = null;
 
-  isLoading = false;
+  // ==========================================
+  // Cart
+  // ==========================================
+
+  cart: CartModel | null = null;
+
+
+  // ==========================================
+  // Loading
+  // ==========================================
+
+  isLoading = true;
+
+
+  // ==========================================
+  // Error
+  // ==========================================
 
   errorMessage = '';
 
-  updatingItemId: string | null = null;
 
-  removingItemId: string | null = null;
+  // ==========================================
+  // API Base URL
+  // ==========================================
 
-  isClearing = false;
+  apiUrl =
+    environment.apiUrl.replace('/api', '');
 
+
+  // ==========================================
+  // On Init
+  // ==========================================
 
   ngOnInit(): void {
 
@@ -45,6 +76,10 @@ export class Cart {
 
   }
 
+
+  // ==========================================
+  // Load Cart
+  // ==========================================
 
   loadCart(): void {
 
@@ -58,6 +93,11 @@ export class Cart {
 
         next: (response) => {
 
+          console.log(
+            'Cart:',
+            response
+          );
+
           this.cart = response;
 
           this.isLoading = false;
@@ -66,86 +106,52 @@ export class Cart {
 
         },
 
-        error: () => {
+        error: (error) => {
 
-          this.cart = null;
+          console.error(
+            'Failed to load cart:',
+            error
+          );
 
           this.errorMessage =
-            'Unable to load your cart.';
+            'Failed to load cart.';
 
           this.isLoading = false;
 
           this.cdr.detectChanges();
 
-        }
+        },
 
       });
-
   }
 
+
+  // ==========================================
+  // Increase Quantity
+  // ==========================================
 
   increaseQuantity(
-    cartItemId: string,
-    currentQuantity: number,
-    availableStock: number
-  ): void {
-
-    if (
-      currentQuantity >= availableStock
-    ) {
-      return;
-    }
-
-    this.updateQuantity(
-      cartItemId,
-      currentQuantity + 1
-    );
-
-  }
-
-
-  decreaseQuantity(
-    cartItemId: string,
+    itemId: string,
     currentQuantity: number
   ): void {
 
-    if (currentQuantity <= 1) {
-      return;
-    }
-
-    this.updateQuantity(
-      cartItemId,
-      currentQuantity - 1
-    );
-
-  }
-
-
-  updateQuantity(
-    cartItemId: string,
-    quantity: number
-  ): void {
-
-    if (quantity <= 0) {
-      return;
-    }
-
-    this.updatingItemId = cartItemId;
-
-    this.errorMessage = '';
-
     this.cartService
       .updateItem(
-        cartItemId,
-        { quantity }
+        itemId,
+        {
+          quantity: currentQuantity + 1
+        }
       )
       .subscribe({
 
         next: (response) => {
 
-          this.cart = response;
+          console.log(
+            'Quantity increased:',
+            response
+          );
 
-          this.updatingItemId = null;
+          this.cart = response;
 
           this.cdr.detectChanges();
 
@@ -153,67 +159,107 @@ export class Cart {
 
         error: (error) => {
 
-          this.updatingItemId = null;
+          console.error(
+            'Failed to increase quantity:',
+            error
+          );
 
-          this.errorMessage =
-            error.error?.message ??
-            'Unable to update cart item.';
-
-          this.cdr.detectChanges();
-
-        }
+        },
 
       });
-
   }
 
 
-  removeItem(
-    cartItemId: string
+  // ==========================================
+  // Decrease Quantity
+  // ==========================================
+
+  decreaseQuantity(
+    itemId: string,
+    currentQuantity: number
   ): void {
 
-    this.removingItemId = cartItemId;
+    if (currentQuantity <= 1) {
 
-    this.errorMessage = '';
+      return;
+
+    }
 
     this.cartService
-      .removeItem(cartItemId)
+      .updateItem(
+        itemId,
+        {
+          quantity: currentQuantity - 1
+        }
+      )
+      .subscribe({
+
+        next: (response) => {
+
+          console.log(
+            'Quantity decreased:',
+            response
+          );
+
+          this.cart = response;
+
+          this.cdr.detectChanges();
+
+        },
+
+        error: (error) => {
+
+          console.error(
+            'Failed to decrease quantity:',
+            error
+          );
+
+        },
+
+      });
+  }
+
+
+  // ==========================================
+  // Remove Item
+  // ==========================================
+
+  removeItem(
+    itemId: string
+  ): void {
+
+    this.cartService
+      .removeItem(itemId)
       .subscribe({
 
         next: () => {
 
-          this.loadCart();
+          console.log(
+            'Item removed from cart.'
+          );
 
-          this.removingItemId = null;
+          this.loadCart();
 
         },
 
         error: (error) => {
 
-          this.removingItemId = null;
+          console.error(
+            'Failed to remove item:',
+            error
+          );
 
-          this.errorMessage =
-            error.error?.message ??
-            'Unable to remove cart item.';
-
-          this.cdr.detectChanges();
-
-        }
+        },
 
       });
-
   }
 
 
+  // ==========================================
+  // Clear Cart
+  // ==========================================
+
   clearCart(): void {
-
-    if (!this.cart?.items.length) {
-      return;
-    }
-
-    this.isClearing = true;
-
-    this.errorMessage = '';
 
     this.cartService
       .clearCart()
@@ -221,53 +267,24 @@ export class Cart {
 
         next: () => {
 
-          this.loadCart();
+          console.log(
+            'Cart cleared.'
+          );
 
-          this.isClearing = false;
+          this.loadCart();
 
         },
 
         error: (error) => {
 
-          this.isClearing = false;
+          console.error(
+            'Failed to clear cart:',
+            error
+          );
 
-          this.errorMessage =
-            error.error?.message ??
-            'Unable to clear cart.';
-
-          this.cdr.detectChanges();
-
-        }
+        },
 
       });
-
   }
 
-
-  continueShopping(): void {
-
-    this.router.navigate([
-      '/catalog/products'
-    ]);
-
-  }
-
-
-  getImageUrl(
-    imageUrl: string | null
-  ): string {
-
-    if (!imageUrl) {
-      return '';
-    }
-
-    if (imageUrl.startsWith('http')) {
-      return imageUrl;
-    }
-
-    return `https://localhost:7186${imageUrl}`;
-
-  }
 }
-
-

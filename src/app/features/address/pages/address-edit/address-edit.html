@@ -1,0 +1,218 @@
+<div class="min-h-screen bg-[#edf5fb] py-8">
+  <div class="max-w-3xl mx-auto px-4 lg:px-6">
+
+    <!-- Header -->
+    <div class="mb-6">
+      <h1 class="text-2xl font-bold text-slate-900">
+        Edit Address
+      </h1>
+
+      <p class="mt-1 text-sm text-slate-500">
+        Update your delivery address.
+      </p>
+    </div>
+
+    <!-- Loading -->
+    @if (isLoading) {
+      <div class="bg-white rounded-2xl border border-slate-200 p-8 text-center">
+        <p class="text-sm text-slate-500">
+          Loading address...
+        </p>
+      </div>
+    }
+
+    <!-- Error -->
+    @if (!isLoading && errorMessage) {
+      <div class="mb-5 rounded-lg border border-red-200 bg-red-50 px-4 py-3">
+        <p class="text-sm text-red-600">
+          {{ errorMessage }}
+        </p>
+      </div>
+    }
+
+    <!-- Form -->
+    @if (!isLoading && addressId) {
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+
+        <form
+          (ngSubmit)="updateAddress()"
+          class="space-y-5">
+
+          <!-- Full Name -->
+          <div>
+            <label
+              for="fullName"
+              class="block text-sm font-medium text-slate-700 mb-1">
+              Full Name
+            </label>
+
+            <input
+              id="fullName"
+              name="fullName"
+              type="text"
+              [(ngModel)]="form.fullName"
+              class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            />
+          </div>
+
+          <!-- Phone -->
+          <div>
+            <label
+              for="phoneNumber"
+              class="block text-sm font-medium text-slate-700 mb-1">
+              Phone Number
+            </label>
+
+            <input
+              id="phoneNumber"
+              name="phoneNumber"
+              type="tel"
+              [(ngModel)]="form.phoneNumber"
+              class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            />
+          </div>
+
+          <!-- Address Line 1 -->
+          <div>
+            <label
+              for="addressLine1"
+              class="block text-sm font-medium text-slate-700 mb-1">
+              Address Line 1
+            </label>
+
+            <input
+              id="addressLine1"
+              name="addressLine1"
+              type="text"
+              [(ngModel)]="form.addressLine1"
+              class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            />
+          </div>
+
+          <!-- Address Line 2 -->
+          <div>
+            <label
+              for="addressLine2"
+              class="block text-sm font-medium text-slate-700 mb-1">
+              Address Line 2
+              <span class="text-slate-400">
+                (Optional)
+              </span>
+            </label>
+
+            <input
+              id="addressLine2"
+              name="addressLine2"
+              type="text"
+              [(ngModel)]="form.addressLine2"
+              class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            />
+          </div>
+
+          <!-- City / State -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+            <div>
+              <label
+                for="city"
+                class="block text-sm font-medium text-slate-700 mb-1">
+                City
+              </label>
+
+              <input
+                id="city"
+                name="city"
+                type="text"
+                [(ngModel)]="form.city"
+                class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              />
+            </div>
+
+            <div>
+              <label
+                for="state"
+                class="block text-sm font-medium text-slate-700 mb-1">
+                State
+              </label>
+
+              <input
+                id="state"
+                name="state"
+                type="text"
+                [(ngModel)]="form.state"
+                class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              />
+            </div>
+
+          </div>
+
+          <!-- Postal Code / Country -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+            <div>
+              <label
+                for="postalCode"
+                class="block text-sm font-medium text-slate-700 mb-1">
+                Postal Code
+              </label>
+
+              <input
+                id="postalCode"
+                name="postalCode"
+                type="text"
+                [(ngModel)]="form.postalCode"
+                class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              />
+            </div>
+
+            <div>
+              <label
+                for="country"
+                class="block text-sm font-medium text-slate-700 mb-1">
+                Country
+              </label>
+
+              <input
+                id="country"
+                name="country"
+                type="text"
+                [(ngModel)]="form.country"
+                class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              />
+            </div>
+
+          </div>
+
+          <!-- Buttons -->
+          <div class="flex justify-end gap-3 pt-3">
+
+            <button
+              type="button"
+              (click)="cancel()"
+              [disabled]="isSubmitting"
+              class="rounded-lg border border-slate-300 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50">
+              Cancel
+            </button>
+
+            <button
+              type="submit"
+              [disabled]="isSubmitting"
+              class="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50">
+
+              @if (isSubmitting) {
+                Updating...
+              } @else {
+                Update Address
+              }
+
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+    }
+
+  </div>
+</div>

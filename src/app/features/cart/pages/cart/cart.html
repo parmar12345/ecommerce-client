@@ -1,333 +1,316 @@
-<div class="cart-container">
+<div class="min-h-screen bg-[#edf5fb] py-10">
 
-  <!-- Header -->
-  <div class="cart-header">
+  <div class="max-w-7xl mx-auto px-4 lg:px-6">
 
-    <div>
-      <h1>Shopping Cart</h1>
+    <!-- Page Header -->
 
-      @if (cart) {
-        <p>
-          {{ cart.totalItems }}
-          {{ cart.totalItems === 1 ? 'item' : 'items' }}
-          in your cart
-        </p>
-      }
-    </div>
+    <div class="flex items-center justify-between mb-8">
 
-    <button
-      type="button"
-      class="continue-shopping-button"
-      (click)="continueShopping()"
-    >
-      Continue Shopping
-    </button>
+      <div>
 
-  </div>
+        <h1 class="text-3xl font-bold text-slate-900">
+          Shopping Cart
+        </h1>
 
+        @if (cart) {
 
-  <!-- Loading -->
-  @if (isLoading) {
+          <p class="text-slate-500 mt-1">
+            {{ cart.totalItems }} items in your cart
+          </p>
 
-    <div class="cart-loading">
-      <p>Loading your cart...</p>
-    </div>
+        }
 
-  }
-
-
-  <!-- Error -->
-  @if (!isLoading && errorMessage) {
-
-    <div class="cart-error">
-      {{ errorMessage }}
-    </div>
-
-  }
-
-
-  <!-- Empty Cart -->
-  @if (
-    !isLoading &&
-    !errorMessage &&
-    cart &&
-    cart.items.length === 0
-  ) {
-
-    <div class="empty-cart">
-
-      <div class="empty-cart-icon">
-        🛒
       </div>
 
-      <h2>Your cart is empty</h2>
+      @if (cart && cart.items.length > 0) {
 
-      <p>
-        Looks like you haven't added anything to your cart yet.
-      </p>
+        <button
+          type="button"
+          (click)="clearCart()"
+          class="text-sm font-semibold text-red-500 hover:text-red-600">
 
-      <button
-        type="button"
-        class="shop-now-button"
-        (click)="continueShopping()"
-      >
-        Start Shopping
-      </button>
+          Clear Cart
+
+        </button>
+
+      }
 
     </div>
 
-  }
+
+    <!-- Loading -->
+
+    @if (isLoading) {
+
+      <div
+        class="bg-white rounded-2xl p-10 text-center shadow-sm">
+
+        <p class="text-slate-500">
+          Loading cart...
+        </p>
+
+      </div>
+
+    }
 
 
-  <!-- Cart Content -->
-  @if (
-    !isLoading &&
-    !errorMessage &&
-    cart &&
-    cart.items.length > 0
-  ) {
+    <!-- Error -->
 
-    <div class="cart-layout">
+    @else if (errorMessage) {
 
-      <!-- Cart Items -->
-      <section class="cart-items-section">
+      <div
+        class="bg-white rounded-2xl p-10 text-center shadow-sm">
 
-        <div class="cart-items-header">
+        <p class="text-red-500">
+          {{ errorMessage }}
+        </p>
 
-          <h2>Cart Items</h2>
+      </div>
 
-          <button
-            type="button"
-            class="clear-cart-button"
-            [disabled]="isClearing"
-            (click)="clearCart()"
-          >
-            @if (isClearing) {
-              Clearing...
-            } @else {
-              Clear Cart
-            }
-          </button>
+    }
 
+
+    <!-- Empty Cart -->
+
+    @else if (!cart || cart.items.length === 0) {
+
+      <div
+        class="bg-white rounded-2xl p-12 text-center shadow-sm">
+
+        <div class="text-6xl mb-5">
+          🛒
         </div>
 
+        <h2 class="text-2xl font-bold text-slate-900">
+          Your cart is empty
+        </h2>
 
-        <div class="cart-items">
+        <p class="text-slate-500 mt-2">
+          Add some products to your cart.
+        </p>
+
+        <a
+          routerLink="/products"
+          class="inline-flex items-center justify-center mt-6 h-11 px-6 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors">
+
+          Continue Shopping
+
+        </a>
+
+      </div>
+
+    }
+
+
+    <!-- Cart -->
+
+    @else {
+
+      <div
+        class="grid grid-cols-1 lg:grid-cols-[1fr_350px] gap-6">
+
+
+        <!-- Cart Items -->
+
+        <div class="space-y-4">
 
           @for (item of cart.items; track item.id) {
 
-            <article class="cart-item">
+            <div
+              class="bg-white rounded-2xl p-5 shadow-sm">
 
-              <!-- Product Image -->
-              <div class="cart-item-image">
-
-                @if (item.primaryImageUrl) {
-
-                  <img
-                    [src]="getImageUrl(item.primaryImageUrl)"
-                    [alt]="item.productName"
-                  >
-
-                } @else {
-
-                  <div class="image-placeholder">
-                    No Image
-                  </div>
-
-                }
-
-              </div>
+              <div class="flex gap-5">
 
 
-              <!-- Product Information -->
-              <div class="cart-item-details">
+                <!-- Image -->
 
-                <h3>
-                  {{ item.productName }}
-                </h3>
+                <div
+                  class="w-28 h-28 shrink-0 rounded-xl bg-[#f5f9fd] overflow-hidden">
 
-                <p class="unit-price">
-                  ₹{{ item.unitPrice | number:'1.2-2' }}
-                  <span>each</span>
-                </p>
+                  @if (item.primaryImageUrl) {
 
+                    <img
+                      [src]="apiUrl + item.primaryImageUrl"
+                      [alt]="item.productName"
+                      class="w-full h-full object-contain p-2"
+                    />
 
-                <!-- Quantity -->
-                <div class="quantity-section">
+                  }
 
-                  <span class="quantity-label">
-                    Quantity
-                  </span>
+                  @else {
 
-                  <div class="quantity-controls">
+                    <div
+                      class="w-full h-full flex items-center justify-center text-slate-400 text-sm">
 
-                    <button
-                      type="button"
-                      class="quantity-button"
-                      [disabled]="
-                        updatingItemId === item.id ||
-                        item.quantity <= 1
-                      "
-                      (click)="
-                        decreaseQuantity(
-                          item.id,
-                          item.quantity
-                        )
-                      "
-                    >
-                      −
-                    </button>
+                      No Image
 
-                    <span class="quantity-value">
+                    </div>
 
-                      @if (updatingItemId === item.id) {
-                        Updating...
-                      } @else {
-                        {{ item.quantity }}
-                      }
-
-                    </span>
-
-                    <button
-                      type="button"
-                      class="quantity-button"
-                      [disabled]="
-                        updatingItemId === item.id ||
-                        item.quantity >= item.availableStock
-                      "
-                      (click)="
-                        increaseQuantity(
-                          item.id,
-                          item.quantity,
-                          item.availableStock
-                        )
-                      "
-                    >
-                      +
-                    </button>
-
-                  </div>
-
-                  <span class="stock-info">
-                    {{ item.availableStock }} available
-                  </span>
+                  }
 
                 </div>
 
 
-                <!-- Remove -->
-                <button
-                  type="button"
-                  class="remove-button"
-                  [disabled]="removingItemId === item.id"
-                  (click)="removeItem(item.id)"
-                >
-                  @if (removingItemId === item.id) {
-                    Removing...
-                  } @else {
+                <!-- Product -->
+
+                <div class="flex-1 min-w-0">
+
+                  <h2
+                    class="text-lg font-semibold text-slate-900">
+
+                    {{ item.productName }}
+
+                  </h2>
+
+                  <p class="text-sm text-slate-500 mt-1">
+
+                    ₹{{ item.unitPrice | number:'1.0-2' }}
+
+                  </p>
+
+
+                  <!-- Quantity -->
+
+                  <div
+                    class="flex items-center gap-3 mt-4">
+
+                    <button
+                      type="button"
+                      (click)="decreaseQuantity(item.id, item.quantity)"
+                      [disabled]="item.quantity <= 1"
+                      class="w-9 h-9 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed">
+
+                      −
+
+                    </button>
+
+
+                    <span
+                      class="w-8 text-center font-semibold">
+
+                      {{ item.quantity }}
+
+                    </span>
+
+
+                    <button
+                      type="button"
+                      (click)="increaseQuantity(item.id, item.quantity)"
+                      [disabled]="item.quantity >= item.availableStock"
+                      class="w-9 h-9 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed">
+
+                      +
+
+                    </button>
+
+                  </div>
+
+
+                  <p class="text-xs text-slate-400 mt-2">
+
+                    {{ item.availableStock }} available
+
+                  </p>
+
+                </div>
+
+
+                <!-- Right Side -->
+
+                <div
+                  class="flex flex-col items-end justify-between">
+
+                  <p
+                    class="text-lg font-bold text-blue-600">
+
+                    ₹{{ item.lineTotal | number:'1.0-2' }}
+
+                  </p>
+
+
+                  <button
+                    type="button"
+                    (click)="removeItem(item.id)"
+                    class="text-sm font-semibold text-red-500 hover:text-red-600">
+
                     Remove
-                  }
-                </button>
+
+                  </button>
+
+                </div>
 
               </div>
 
-
-              <!-- Line Total -->
-              <div class="cart-item-total">
-
-                <span class="total-label">
-                  Total
-                </span>
-
-                <strong>
-                  ₹{{ item.lineTotal | number:'1.2-2' }}
-                </strong>
-
-              </div>
-
-            </article>
+            </div>
 
           }
 
         </div>
 
-      </section>
+
+        <!-- Summary -->
+
+        <div
+          class="bg-white rounded-2xl p-6 h-fit shadow-sm">
+
+          <h2
+            class="text-xl font-bold text-slate-900">
+
+            Order Summary
+
+          </h2>
 
 
-      <!-- Cart Summary -->
-      <aside class="cart-summary">
+          <div
+            class="flex justify-between mt-6">
 
-        <h2>Order Summary</h2>
+            <span class="text-slate-500">
+              Items
+            </span>
+
+            <span class="font-semibold">
+              {{ cart.totalItems }}
+            </span>
+
+          </div>
 
 
-        <div class="summary-row">
+          <div
+            class="border-t border-slate-200 my-5">
+          </div>
 
-          <span>
-            Items
-          </span>
 
-          <span>
-            {{ cart.totalItems }}
-          </span>
+          <div
+            class="flex justify-between">
+
+            <span class="text-lg font-semibold">
+              Subtotal
+            </span>
+
+            <span
+              class="text-xl font-bold text-blue-600">
+
+              ₹{{ cart.subtotal | number:'1.0-2' }}
+
+            </span>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="w-full mt-6 h-12 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors">
+
+            Proceed to Checkout
+
+          </button>
 
         </div>
 
+      </div>
 
-        <div class="summary-row">
+    }
 
-          <span>
-            Subtotal
-          </span>
-
-          <span>
-            ₹{{ cart.subtotal | number:'1.2-2' }}
-          </span>
-
-        </div>
-
-
-        <div class="summary-divider"></div>
-
-
-        <div class="summary-total">
-
-          <span>
-            Total
-          </span>
-
-          <strong>
-            ₹{{ cart.subtotal | number:'1.2-2' }}
-          </strong>
-
-        </div>
-
-
-        <!-- Checkout placeholder -->
-        <button
-          type="button"
-          class="checkout-button"
-          disabled
-        >
-          Checkout
-        </button>
-
-        <p class="checkout-note">
-          Checkout will be available after the order system is added.
-        </p>
-
-
-        <button
-          type="button"
-          class="summary-shopping-button"
-          (click)="continueShopping()"
-        >
-          Continue Shopping
-        </button>
-
-      </aside>
-
-    </div>
-
-  }
+  </div>
 
 </div>
