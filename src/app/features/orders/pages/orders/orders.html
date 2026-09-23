@@ -1,0 +1,375 @@
+
+<div class="min-h-screen relative overflow-hidden bg-[#edf5fb] px-4 py-8 md:px-8">
+
+  <!-- Background Decorations -->
+  <div class="absolute -top-32 -left-32 w-[520px] h-[520px] rounded-full bg-[#d8ecfa]"></div>
+
+  <div class="absolute -bottom-48 -right-32 w-[600px] h-[600px] rounded-full bg-[#dceefe]"></div>
+
+  <div class="absolute top-[12%] right-[12%] w-20 h-20 rounded-[2rem] bg-blue-500/10 rotate-12"></div>
+
+  <div class="absolute bottom-[18%] left-[13%] w-4 h-4 rounded-full bg-blue-400/40"></div>
+
+
+  <!-- Main Container -->
+  <div class="relative max-w-5xl mx-auto">
+
+    <!-- Page Header -->
+    <div
+      class="bg-white
+             rounded-[2rem]
+             border border-white
+             p-6 md:p-8
+             mb-6
+             shadow-[0_25px_80px_rgba(30,64,175,0.12)]"
+    >
+
+      <p class="text-sm font-semibold text-blue-600 mb-1">
+        Account
+      </p>
+
+      <h1
+        class="text-3xl md:text-4xl
+               font-extrabold
+               text-slate-800"
+      >
+        My Orders
+      </h1>
+
+      <p class="mt-2 text-sm text-slate-500">
+        View your previous orders and order details.
+      </p>
+
+    </div>
+
+
+    <!-- Loading -->
+    @if (isLoading()) {
+
+      <div
+        class="bg-white
+               rounded-[2rem]
+               border border-white
+               p-8
+               shadow-[0_25px_80px_rgba(30,64,175,0.12)]
+               text-center"
+      >
+
+        <div
+          class="mx-auto mb-4
+                 h-10 w-10
+                 rounded-full
+                 border-4
+                 border-blue-100
+                 border-t-blue-600
+                 animate-spin"
+        ></div>
+
+        <p class="text-sm font-medium text-slate-600">
+          Loading your orders...
+        </p>
+
+      </div>
+
+    }
+
+
+    <!-- Error -->
+    @if (errorMessage()) {
+
+      <div
+        class="bg-white
+               rounded-[2rem]
+               border border-red-100
+               p-6
+               shadow-[0_25px_80px_rgba(30,64,175,0.12)]"
+      >
+
+        <div
+          class="flex items-start gap-3
+                 rounded-xl
+                 border border-red-200
+                 bg-red-50
+                 px-4 py-4"
+        >
+
+          <span class="text-lg">
+            ⚠️
+          </span>
+
+          <p class="text-sm font-medium text-red-600">
+            {{ errorMessage() }}
+          </p>
+
+        </div>
+
+      </div>
+
+    }
+
+
+    <!-- Empty Orders -->
+    @if (!isLoading() && !errorMessage() && orders().length === 0) {
+
+      <div
+        class="bg-white
+               rounded-[2rem]
+               border border-white
+               p-8 md:p-12
+               text-center
+               shadow-[0_25px_80px_rgba(30,64,175,0.12)]"
+      >
+
+        <div
+          class="mx-auto mb-5
+                 w-16 h-16
+                 flex items-center justify-center
+                 rounded-2xl
+                 bg-blue-50
+                 text-3xl"
+        >
+          🛍️
+        </div>
+
+        <h2 class="text-xl font-bold text-slate-800">
+          No orders found
+        </h2>
+
+        <p class="mt-2 text-sm text-slate-500">
+          You haven't placed any orders yet.
+        </p>
+
+        <a
+          routerLink="/products"
+          class="inline-flex items-center justify-center
+                 mt-6
+                 rounded-xl
+                 bg-blue-600
+                 px-5 py-2.5
+                 text-sm font-semibold
+                 text-white
+                 shadow-[0_10px_25px_rgba(37,99,235,0.20)]
+                 hover:bg-blue-700
+                 transition-colors"
+        >
+          Continue Shopping
+        </a>
+
+      </div>
+
+    }
+
+
+    <!-- Orders List -->
+    @if (!isLoading() && orders().length > 0) {
+
+      <div class="space-y-5">
+
+        @for (order of orders(); track order.orderId) {
+
+          <!-- Order Card -->
+          <div
+            class="bg-white
+                   rounded-[1.5rem]
+                   border border-white
+                   overflow-hidden
+                   shadow-[0_15px_45px_rgba(30,64,175,0.08)]
+                   hover:shadow-[0_20px_55px_rgba(30,64,175,0.13)]
+                   transition-shadow duration-200"
+          >
+
+            <!-- Order Header -->
+            <div
+              class="p-5 md:p-6
+                     border-b border-slate-100
+                     bg-[#f8fbfe]"
+            >
+
+              <div
+                class="flex flex-col
+                       sm:flex-row
+                       sm:items-center
+                       sm:justify-between
+                       gap-4"
+              >
+
+                <div class="min-w-0">
+
+                  <p
+                    class="text-xs
+                           font-semibold
+                           uppercase
+                           tracking-wide
+                           text-blue-600"
+                  >
+                    Order
+                  </p>
+
+                  <h2
+                    class="mt-1
+                           text-base md:text-lg
+                           font-bold
+                           text-slate-800
+                           break-all"
+                  >
+                    #{{ order.orderId }}
+                  </h2>
+
+                  <p class="mt-1 text-sm text-slate-500">
+                    {{ order.createdAt | date:'medium' }}
+                  </p>
+
+                </div>
+
+
+                <!-- Status -->
+                <span
+                  class="self-start sm:self-center
+                         inline-flex
+                         items-center
+                         rounded-full
+                         bg-blue-50
+                         px-3 py-1.5
+                         text-xs
+                         font-semibold
+                         text-blue-600"
+                >
+                  {{ order.status }}
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <!-- Order Items -->
+            <div class="p-5 md:p-6">
+
+              <h3
+                class="mb-4
+                       text-sm
+                       font-bold
+                       text-slate-700"
+              >
+                Order Items
+              </h3>
+
+              <div class="space-y-3">
+
+                @for (item of order.items; track item.productId) {
+
+                  <div
+                    class="flex flex-col
+                           sm:flex-row
+                           sm:items-center
+                           sm:justify-between
+                           gap-3
+                           rounded-xl
+                           border border-slate-100
+                           bg-[#f8fbfe]
+                           px-4 py-3
+                           hover:border-blue-100
+                           transition-colors"
+                  >
+
+                    <!-- Product Info -->
+                    <div class="min-w-0">
+
+                      <strong
+                        class="block
+                               text-sm
+                               font-semibold
+                               text-slate-800"
+                      >
+                        {{ item.productName }}
+                      </strong>
+
+                      <p class="mt-1 text-xs text-slate-500">
+                        ₹{{ item.unitPrice }}
+                        ×
+                        {{ item.quantity }}
+                      </p>
+
+                    </div>
+
+
+                    <!-- Item Total -->
+                    <strong
+                      class="text-sm
+                             font-bold
+                             text-blue-600
+                             sm:text-right"
+                    >
+                      ₹{{ item.totalPrice }}
+                    </strong>
+
+                  </div>
+
+                }
+
+              </div>
+
+            </div>
+
+
+            <!-- Order Footer -->
+            <div
+              class="flex flex-col
+                     sm:flex-row
+                     sm:items-center
+                     sm:justify-between
+                     gap-4
+                     px-5 py-4 md:px-6
+                     border-t border-slate-100
+                     bg-white"
+            >
+
+              <strong
+                class="text-base
+                       font-extrabold
+                       text-slate-800"
+              >
+                Total:
+                <span class="text-blue-600">
+                  ₹{{ order.totalAmount }}
+                </span>
+              </strong>
+
+
+              <a
+                [routerLink]="[
+                  '/orders',
+                  order.orderId
+                ]"
+                class="inline-flex
+                       items-center
+                       justify-center
+                       rounded-xl
+                       border border-blue-200
+                       bg-white
+                       px-4 py-2.5
+                       text-sm
+                       font-semibold
+                       text-blue-600
+                       hover:bg-blue-50
+                       hover:border-blue-300
+                       transition-colors"
+              >
+                View Details
+                <span class="ml-2">→</span>
+              </a>
+
+            </div>
+
+          </div>
+
+        }
+
+      </div>
+
+    }
+
+  </div>
+
+</div>
+

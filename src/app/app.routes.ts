@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
+
 import { authGuard } from './core/guards/auth-guard';
-import { inject } from '@angular/core';
 
 export const routes: Routes = [
 
@@ -27,13 +27,34 @@ export const routes: Routes = [
       import('./features/cart/pages/cart/cart')
         .then(m => m.Cart)
   },
+
   {
-  path: 'address',
-  loadChildren: () =>
-    import('./features/address/address.routes').then(
-      (m) => m.addressRoutes
-    ),
-},
+    path: 'address',
+    canActivate: [
+      authGuard
+    ],
+    loadChildren: () =>
+      import('./features/address/address.routes')
+        .then(m => m.addressRoutes)
+  },
+
+  {
+    path: 'checkout',
+    canActivate: [
+      authGuard
+    ],
+    loadChildren: () =>
+      import('./features/checkout/checkout.routes')
+        .then(m => m.checkoutRoutes)
+  },
+  {
+    path: 'orders',
+    canActivate: [authGuard],
+    loadChildren: () =>
+      import('./features/orders/orders.routes')
+        .then(m => m.ordersRoutes)
+  },
+
   {
     path: '',
     redirectTo: 'auth/login',
@@ -44,4 +65,5 @@ export const routes: Routes = [
     path: '**',
     redirectTo: 'auth/login'
   }
+
 ];
